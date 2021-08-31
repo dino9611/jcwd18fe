@@ -4,6 +4,8 @@ import { Switch, Route, Link } from "react-router-dom";
 
 class PageLain extends Component {
     state = {};
+
+    
     render() {
       return (
         <div>

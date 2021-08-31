@@ -5,9 +5,16 @@ import PageLain from "./pages/pageLain";
 import NotFound from "./pages/NotFound";
 import Resep from "./pages/resep";
 import { Switch, Route } from "react-router-dom";
+import HitungKata from "./pages/hitungkata";
 
 class App extends Component {
-  state = {};
+  state = {
+    kata: "budi",
+  };
+
+  gantikata = (nama) => {
+    this.setState({ kata: nama });
+  };
 
   render() {
     return (
@@ -18,6 +25,7 @@ class App extends Component {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/page" component={PageLain} />
+          <Route path="/hitungkata" component={HitungKata} />
           <Route path="/resep" component={Resep} />
           <Route path="*" component={NotFound} />
         </Switch>

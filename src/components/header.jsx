@@ -6,7 +6,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
+  // NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -14,7 +14,7 @@ import {
   NavbarText
 } from 'reactstrap';
 import {Link} from 'react-router-dom'
-
+import {connect} from 'react-redux'
 const Header = (props) => {
 
   const [isOpen, setIsOpen] = useState(false);
@@ -28,11 +28,12 @@ const Header = (props) => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            <NavItem>
+            <NavItem className='mr-3 mt-2'>
               <Link to="/resep">resep</Link>
             </NavItem>
-            <NavItem>
-              <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+            <NavItem className='mr-3 mt-2'>
+            <Link to="/hitungkata">hitung Kata</Link>
+              
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
@@ -51,12 +52,20 @@ const Header = (props) => {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-          </Nav>
-          <NavbarText>Simple Text</NavbarText>
+          </Nav>   
+          <NavbarText>jumlah kata : {props.jumlahKata}</NavbarText>
         </Collapse>
       </Navbar>
     </div>
   );
 }
 
-export default Header;
+// menghubungkan redux ke komponent
+const MapStateToProps = (state)=>{
+  return {
+    tambahan:state.tambahan,
+    jumlahKata : state.HitungKata
+  }
+}
+
+export default connect(MapStateToProps) (Header);

@@ -4,6 +4,8 @@ import TableRow from "./../components/TableRow";
 import './styles/home.css'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
+import {connect} from 'react-redux'
+import {tambahAction,kurangAction,perkalianAction} from './../redux/actions'
 class Home extends Component {
   state = {
     todo: [],
@@ -28,7 +30,8 @@ class Home extends Component {
       gambar: "",
       waktuKegiatan: "0",
     },
-    loading:true
+    loading:true,
+    kali:0
   };
   
   // ? list lifecycle method
@@ -235,6 +238,7 @@ class Home extends Component {
           index={index}
           onDeleteClick={this.onDeleteClick}
           onEditClick={this.onEditClick}
+
         />
         // ?  tanpa komponen
         // <tr key={index}>
@@ -340,8 +344,17 @@ class Home extends Component {
     );
   };
 
+  onInputChange = (e)=>{
+    this.setState({kali:e.target.value})
+  }
+
+  kalikan = ()=>{
+    this.props.perkalianAction(this.state.kali)
+  }
+
   render() {
     const { todo, indexDel, modalDel } = this.state;
+    console.log(this.props)
     return (
   
       <div className="px-5 d-flex align-items-center flex-column">
@@ -453,6 +466,22 @@ class Home extends Component {
         <div>
           <input type="text" placeholder='search kegiatan' className='form-control'/>
         </div>
+        {/* <div>
+          {this.props.kata}
+          <br />
+          <button onClick={()=>this.props.gantikata('andi')}>rubah jadi andi</button>
+        </div> */}
+        <div>
+        <button className='mr-4' onClick={this.props.kurangAction}>kurang</button>
+
+          {this.props.tambahan.angka}
+          <button className='ml-4' onClick={this.props.tambahAction}>tambah</button>
+        </div>
+        <div>
+          <input type="number"  onChange={this.onInputChange}/>
+          {this.props.perkalian}
+          <button className='ml-4' onClick={this.kalikan}>kali {this.state.kali}</button>
+        </div>
         {
           this.state.loading?
           <div className='mt-2 tinggi d-flex justify-content-center align-items-center' style={{width:'100%'}}>
@@ -480,4 +509,14 @@ class Home extends Component {
   }
 }
 
-export default Home;
+// menghubungkan redux ke komponent
+const MapStateToProps = (state)=>{
+  return {
+    tambahan:state.tambahan,
+    perkalian:state.multiply,
+  }
+}
+
+
+
+export default connect(MapStateToProps,{tambahAction,kurangAction,perkalianAction}) (Home);
