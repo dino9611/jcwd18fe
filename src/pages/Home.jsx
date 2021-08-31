@@ -352,9 +352,41 @@ class Home extends Component {
     this.props.perkalianAction(this.state.kali)
   }
 
+  hitaxios = 0
+  debounce = (func, delay,e) => {
+    let debounceTimer
+    e.persist();
+      // console.log('dsadsa',e.target.value)
+    clearTimeout(debounceTimer)       
+    debounceTimer= setTimeout(() => {
+      console.log('masuk')
+      func(e)
+    }, delay)
+    
+} 
+
+  serachDebounce = (e)=>{
+    this.debounce(this.searchKegiatan,700,e)
+  }
+
+  searchKegiatan = (e)=>{
+    axios.get(`http://localhost:5000/todos?kegiatan_like=${e.target.value}`)
+    .then((res)=>{
+      this.hitaxios+=1
+      console.log(e.target.value)
+      console.log(this.hitaxios)
+      console.log(res.data)
+      this.setState({todo:res.data})
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
+
+ 
+
   render() {
     const { todo, indexDel, modalDel } = this.state;
-    console.log(this.props)
+  
     return (
   
       <div className="px-5 d-flex align-items-center flex-column">
@@ -464,24 +496,15 @@ class Home extends Component {
           Add Todo
         </button>
         <div>
-          <input type="text" placeholder='search kegiatan' className='form-control'/>
+          <input onChange={this.serachDebounce} type="text" placeholder='search kegiatan' className='form-control'/>
         </div>
         {/* <div>
           {this.props.kata}
           <br />
           <button onClick={()=>this.props.gantikata('andi')}>rubah jadi andi</button>
         </div> */}
-        <div>
-        <button className='mr-4' onClick={this.props.kurangAction}>kurang</button>
+        
 
-          {this.props.tambahan.angka}
-          <button className='ml-4' onClick={this.props.tambahAction}>tambah</button>
-        </div>
-        <div>
-          <input type="number"  onChange={this.onInputChange}/>
-          {this.props.perkalian}
-          <button className='ml-4' onClick={this.kalikan}>kali {this.state.kali}</button>
-        </div>
         {
           this.state.loading?
           <div className='mt-2 tinggi d-flex justify-content-center align-items-center' style={{width:'100%'}}>

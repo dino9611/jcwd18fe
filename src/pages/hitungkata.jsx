@@ -5,7 +5,15 @@ import { HitungKataAction } from '../redux/actions';
 class HitungKata extends Component {
     state = {
         kalimat:'',
-        totalkalimat:0
+        totalkalimat:0,
+
+    }
+
+    componentDidUpdate(prevprops, prevstate){
+        if(prevstate.totalkalimat !== this.state.totalkalimat){
+            console.log('tes')
+        }
+    
     }
 
     onKalimatChange = (e)=>{
@@ -13,7 +21,7 @@ class HitungKata extends Component {
         kalimat = kalimat.split(' ') 
         kalimat = kalimat.filter((val)=>val !== '')
         this.props.HitungKataAction(kalimat.length)
-        this.setState({kalimat:e.target.value})
+        this.setState({kalimat:e.target.value,totalkalimat:kalimat.length})
 
         
     }
@@ -21,6 +29,7 @@ class HitungKata extends Component {
     render() { 
         return (
             <div className='container pt-3'>
+                
                 <textarea className='form-control' placeholder='tulis kalimat' onChange={this.onKalimatChange} cols="30" rows="10"></textarea>
                 jumlah kata : {this.props.jumlahKata}
             </div>
